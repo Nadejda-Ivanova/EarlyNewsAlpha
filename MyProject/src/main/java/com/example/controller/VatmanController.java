@@ -13,7 +13,7 @@ public class VatmanController {
 
 	@RequestMapping(value="/vatmans", method=RequestMethod.GET)
 	public String showVatmanPage(Model model) {
-		model.addAttribute("vatman", new Vatman());
+		model.addAttribute("vatman", new Vatman("Gosho", 20));
 		return "vatmans";
 	}
 	
