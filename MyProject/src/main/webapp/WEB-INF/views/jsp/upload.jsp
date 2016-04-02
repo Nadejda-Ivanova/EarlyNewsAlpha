@@ -11,41 +11,42 @@
 <h1>UPLOAD JSP</h1>
 <h4>Upload Pictures</h4>
 
-<form action="" method="post">
+ <spring:form method="post" action="./savefiles"
+            modelAttribute="uploadForm" enctype="multipart/form-data">
 
-<input type="file" name="fileName1">
+<input type="file" name="files[0]">
 <br>
 <br>
-<input type="file" name="fileName2">
+<input type="file" name="files[1]">
 <br>
 <br>
-<input type="file" name="fileName3">
+<input type="file" name="files[2]">
 <br>
 <br>
-<input type="file" name="fileName4">
+<input type="file" name="files[3]">
 <br>
 <br>
-<input type="file" name="fileName5">
+<input type="file" name="files[4]">
 <br>
 <br>
-<input type="file" name="fileName6">
+<input type="file" name="files[5]">
 <br>
 <br>
-<input type="file" name="fileName7">
+<input type="file" name="files[6]">
 <br>
 <br>
-<input type="file" name="fileName8">
+<input type="file" name="files[7]">
 <br>
 <br>
-<input type="file" name="fileName9">
+<input type="file" name="files[8]">
 <br>
 <br>
-<input type="file" name="fileName10">
+<input type="file" name="files[9]">
 <br>
 <br>
 <input type="submit" value="Upload">
 
-</form >
+</spring:form >
 
 
 

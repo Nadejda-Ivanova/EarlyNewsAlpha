@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.model.Article;
 import com.example.model.ArticleDAO;
+import com.example.model.Category;
 import com.example.model.CategoryDAO;
 
 
@@ -23,14 +24,11 @@ public class CreateArticleController {
 	public String createArt(Model model){
 		model.addAttribute("newArticle", new Article());
 		CategoryDAO dao = new CategoryDAO();
-		ArrayList<String> temp =new ArrayList<String>();
-		ArrayList<Article> artList  = new ArrayList<Article>();
-		for(int i =0; i<artList.size(); i++){
-			temp.add(artList.get(i).getCategory().getName());
-		}
-//		request.getSession().setAttribute("categories", dao.getAllCategories());
+				ArrayList<String> temp =new ArrayList<String>();
+		ArrayList<Category> artList  = dao.getAllCategories();
+		//		request.getSession().setAttribute("categories", dao.getAllCategories());
 		System.out.println("transfered to CreateA");
-		model.addAttribute("catList", temp);
+		model.addAttribute("catList", artList);
 		return "CreateA";
 	}
 	
@@ -38,7 +36,11 @@ public class CreateArticleController {
 	public String addNewArticle(@ModelAttribute Article newArticle) {
 	newArticle.setDateAdded(LocalDateTime.now());
 	newArticle.setDateModified(LocalDateTime.now());
-	System.out.println(newArticle);
+	CategoryDAO daoCat = new CategoryDAO();
+	int idCat = Integer.parseInt(newArticle.getCatId());
+	Category temporary = daoCat.getCategoryById(idCat);
+	newArticle.setCategory(temporary);
+	System.out.println(newArticle.getCatId());
 //	Pishe v dao i vzima idto DA SMENJA NULATA
 //	ArticleDAO dao= new ArticleDAO();
 //	dao.createArticle(article)

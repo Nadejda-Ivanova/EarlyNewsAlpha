@@ -11,10 +11,10 @@ public class Article {
 	private LocalDateTime dateAdded;
 	private LocalDateTime dateModified;
 	private Category category;
-	private String image;
-	private String video;
+	private Image image;
+	private Video video;
 	private String catId;
-	private String categoryName;
+
 
 	public Article() {
 	}
@@ -74,19 +74,21 @@ public class Article {
 		this.category = category;
 	}
 
-	public String getImage() {
+	
+
+	public Image getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(Image image) {
 		this.image = image;
 	}
 
-	public String getVideo() {
+	public Video getVideo() {
 		return video;
 	}
 
-	public void setVideo(String video) {
+	public void setVideo(Video video) {
 		this.video = video;
 	}
 
@@ -98,20 +100,7 @@ public class Article {
 		this.catId = catId;
 	}
 
-	public String getCategoryName() {
-		return categoryName;
-	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-
-	@Override
-	public String toString() {
-		return "Article [id=" + id + ", title=" + title + ", text=" + text + ", dateAdded=" + dateAdded
-				+ ", dateModified=" + dateModified + ", category=" + category + ", image=" + image + ", video=" + video
-				+ ", catId=" + catId + ", categoryName=" + categoryName + "]";
-	}
 
 	
 

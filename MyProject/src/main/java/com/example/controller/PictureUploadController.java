@@ -15,7 +15,7 @@ import javax.servlet.http.Part;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+/*
 @Controller
 @MultipartConfig
 public class PictureUploadController {
@@ -30,7 +30,7 @@ public class PictureUploadController {
 	private static final String PICTURE_FORMAT = ".jpg";
 	private static final String PICTURE_FOLDER = "C:\\pics\\";
 	private static final int BUFFER_SIZE = 1024;
-	
+
 	@RequestMapping(value="/Upload", method=RequestMethod.POST)
 	public void uploadAllPictures(HttpServletRequest request) {
 		ArrayList<InputStream> streams = new ArrayList<InputStream>();
@@ -81,3 +81,4 @@ public class PictureUploadController {
 		}
 	}
 }
+*/

@@ -2,7 +2,7 @@ package com.example.model;
 
 public class Category {
 	private int id;
-	private String name;
+	public String name;
 	private String description;
 	private boolean top;
 	private boolean main;
@@ -49,9 +49,9 @@ public class Category {
 	}
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", top=" + top + ", main="
-				+ main + ", sortOrder=" + sortOrder + "]";
+		return name;
 	}
+
 	
 	
 	

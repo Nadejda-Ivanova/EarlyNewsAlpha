@@ -30,13 +30,10 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 				ps.setString(2, article.getText());
 				ps.setTimestamp(3, stampTime);
 				ps.setTimestamp(4, stampTime);
-				CategoryDAO cat= new CategoryDAO();
-				int categoryId = cat.getCategoryIdByName(article.getCategory());
+				int categoryId = article.getCategory().getId();
 				ps.setInt(3, categoryId);
-				
 				ResultSet result = ps.getGeneratedKeys();
 				int id =result.getInt(1);
-				
 				article.setId(id);
 				ps.executeUpdate();
 				result.next();
@@ -66,7 +63,7 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 				ps.setString(1, article.getTitle());
 				ps.setString(2, article.getText());
 				CategoryDAO cat=new CategoryDAO();
-				int categoryId=cat.getCategoryIdByName(article.getCategory());
+				int categoryId=article.getCategory().getId();
 				ps.setInt(3, categoryId);
 				ps.setInt(4, article.getId());
 				
@@ -116,18 +113,15 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 			ps.setInt(1, articleId);
 			ResultSet result = ps.executeQuery();
 			result.next();
-			
-			
-			
-			
 			String title=result.getString(2);
 			String text=result.getString(3);
 			int categoryId=result.getInt(6);
 			CategoryDAO cat = new CategoryDAO();
-			String category = cat.getCategoryNameById(categoryId);
-			
-			
+			Category category = cat.getCategoryById(categoryId);
 			articleToReturn=new Article(title,text, category);
+			articleToReturn.setDateAdded(result.getTimestamp(4).toLocalDateTime());
+			articleToReturn.setDateAdded(result.getTimestamp(5).toLocalDateTime());
+			articleToReturn.set
 			return articleToReturn;
 			
 

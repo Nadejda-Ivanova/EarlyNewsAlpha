@@ -28,7 +28,7 @@
 	<br/><br/>
 	Select Category<br>
 	
-	<spring:radiobuttons path="categoryName" items="${catList}" />
+	<spring:radiobuttons path="catId" items="${catList}" itemValue="id" itemName="name" />
 	
 <br>
 	

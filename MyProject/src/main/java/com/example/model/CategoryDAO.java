@@ -15,6 +15,22 @@ public class CategoryDAO extends AbstractDAO implements ICategoryDAO {
 	private static final String GET_CATEGORY_ID_BY_NAME = "SELECT * FROM earlyedition.category WHERE name = ?";
 	private static final String GET_CATEGORIES = "SELECT * FROM earlyedition.category";
 	
+	public Category getCategoryById(int id){
+		Category temp = new Category();
+		try {
+			PreparedStatement prep = getCon().prepareStatement(GET_CATEGORY_NAME_BY_ID);
+			prep.setInt(1, id);
+			ResultSet rs = prep.executeQuery();
+			rs.next();
+			buildCategory(rs, temp);
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return temp;
+	}
+	
+	
 	public ArrayList<Category> getAllCategories(){
 		ArrayList<Category> temp = new ArrayList<Category>();
 		try {
@@ -22,19 +38,7 @@ public class CategoryDAO extends AbstractDAO implements ICategoryDAO {
 			ResultSet rs = prep.executeQuery();
 			while(rs.next()){
 				Category cat = new Category();
-				cat.setId(rs.getInt(1));
-				cat.setName(rs.getString(2));
-				if(rs.getInt(4) ==1){
-					cat.setTop(true);
-				}else{
-					cat.setTop(false);
-				}
-				if(rs.getInt(5) ==1){
-					cat.setMain(true);
-				}else{
-					cat.setMain(false);
-				}
-				cat.setSortOrder(rs.getInt(6));
+				buildCategory(rs, cat);
 				temp.add(cat);
 			}
 			
@@ -44,6 +48,23 @@ public class CategoryDAO extends AbstractDAO implements ICategoryDAO {
 			e.printStackTrace();
 		}
 		return temp;
+	}
+
+
+	public void buildCategory(ResultSet rs, Category cat) throws SQLException {
+		cat.setId(rs.getInt(1));
+		cat.setName(rs.getString(2));
+		if(rs.getInt(4) ==1){
+			cat.setTop(true);
+		}else{
+			cat.setTop(false);
+		}
+		if(rs.getInt(5) ==1){
+			cat.setMain(true);
+		}else{
+			cat.setMain(false);
+		}
+		cat.setSortOrder(rs.getInt(6));
 	}	
 	
 	
