@@ -15,6 +15,7 @@ import com.example.model.Article;
 import com.example.model.ArticleDAO;
 import com.example.model.Category;
 import com.example.model.CategoryDAO;
+import com.example.model.InvalidDAOException;
 
 
 @Controller
@@ -40,7 +41,15 @@ public class CreateArticleController {
 	int idCat = Integer.parseInt(newArticle.getCatId());
 	Category temporary = daoCat.getCategoryById(idCat);
 	newArticle.setCategory(temporary);
-	System.out.println(newArticle.getCatId());
+	ArticleDAO daoArt = new ArticleDAO();
+	try {
+		daoArt.createArticle(newArticle);
+	} catch (InvalidDAOException e) {
+		// TUKA DA PREPRATJA KUM DRUGA STRANICA ZA FAILURE SEGA OTIVA NA upload.jsp
+		e.printStackTrace();
+	}
+	
+	System.out.println("ARTICLE WAS ADDED, CHECK DB?");
 //	Pishe v dao i vzima idto DA SMENJA NULATA
 //	ArticleDAO dao= new ArticleDAO();
 //	dao.createArticle(article)

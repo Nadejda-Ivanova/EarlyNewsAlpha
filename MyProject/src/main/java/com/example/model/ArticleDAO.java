@@ -31,12 +31,12 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 				ps.setTimestamp(3, stampTime);
 				ps.setTimestamp(4, stampTime);
 				int categoryId = article.getCategory().getId();
-				ps.setInt(3, categoryId);
-				ResultSet result = ps.getGeneratedKeys();
-				int id =result.getInt(1);
-				article.setId(id);
+				ps.setInt(5, categoryId);
 				ps.executeUpdate();
+				ResultSet result = ps.getGeneratedKeys();
 				result.next();
+				int id =result.getInt(1);
+				
 				
 				return id;
 
@@ -45,7 +45,7 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
-				throw new InvalidDAOException("Your article cannot be created right now. Sorry about that. ");
+				throw new InvalidDAOException("Your article cannot be created right now. Sorry about that. ", e);
 			}
 		} else {
 			throw new InvalidDAOException("This article is null. Try again.");
@@ -72,7 +72,7 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				throw new InvalidDAOException("Your article cannot be edited right now. Sorry about that");
+				throw new InvalidDAOException("Your article cannot be edited right now. Sorry about that", e);
 			}
 		}
 		else {
@@ -89,18 +89,16 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 			ps.setInt(1, article.getId());
 			ResultSet result = ps.executeQuery();
 			result.next();
-			
-		} catch (SQLException e) {
-			
+			} catch (SQLException e) {
 			e.printStackTrace();
-			throw new InvalidDAOException("The article  cannot be removed right now . Try again later.");
+			throw new InvalidDAOException("The article  cannot be removed right now . Try again later.", e);
 		}
 		
 	}
 
 	@Override
 	public List<Article> getAllArticlesByCategoryName(String category) {
-		// TODO Auto-generated method stub
+		// To be used with the method below
 		return null;
 	}
 
@@ -121,12 +119,10 @@ public class ArticleDAO extends AbstractDAO implements IArticleDAO{
 			articleToReturn=new Article(title,text, category);
 			articleToReturn.setDateAdded(result.getTimestamp(4).toLocalDateTime());
 			articleToReturn.setDateAdded(result.getTimestamp(5).toLocalDateTime());
-			articleToReturn.set
-			return articleToReturn;
-			
-
-			
-			
+			articleToReturn.setCategory(category);
+			articleToReturn.setVideo(new VideoDAO().getVideoById(result.getInt(7)));
+				return articleToReturn;
+						
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
