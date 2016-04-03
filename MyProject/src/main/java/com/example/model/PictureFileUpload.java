@@ -1,7 +1,7 @@
 package com.example.model;
 
 import java.util.List;
-
+//OT VCHERA
 import org.springframework.web.multipart.MultipartFile;
 
 public class PictureFileUpload {

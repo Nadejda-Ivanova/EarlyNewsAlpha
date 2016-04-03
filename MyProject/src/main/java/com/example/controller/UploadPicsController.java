@@ -17,7 +17,7 @@ import com.example.model.PictureFileUpload;
 
 @Controller
 public class UploadPicsController {
-	
+	//OT ZDRAVKO
 	 
 	    //@RequestMapping(value = "/upload", method = RequestMethod.GET)
 	    //public String crunchifyDisplayForm() {

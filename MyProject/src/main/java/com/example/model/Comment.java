@@ -8,17 +8,21 @@ public class Comment {
 	private String title;
 	private LocalDateTime dateAdded;
 	private String text;
-	private Article iBelongTo;
+	private Article article;
+	private int likes;
+	private int dislikes;
+	private boolean isBad;
 	
+		
+	public Comment() {
+		}
 	
-	
-	
-	public Comment(String author, String title, String text, Article iBelongTo) {
+	public Comment(String author, String title, String text, Article article) {
 		super();
 		this.author = author;
 		this.title = title;
 		this.text = text;
-		this.iBelongTo = iBelongTo;
+		this.article = article;
 	}
 	public int getId() {
 		return id;
@@ -50,11 +54,35 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public Article getiBelongTo() {
-		return iBelongTo;
+	public Article getArticle() {
+		return article;
 	}
-	public void setiBelongTo(Article iBelongTo) {
-		this.iBelongTo = iBelongTo;
+	public void setArticle(Article article) {
+		this.article = article;
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public int getDislikes() {
+		return dislikes;
+	}
+
+	public void setDislikes(int dislikes) {
+		this.dislikes = dislikes;
+	}
+
+	public boolean isBad() {
+		return isBad;
+	}
+
+	public void setBad(boolean isBad) {
+		this.isBad = isBad;
 	}
 	
 	

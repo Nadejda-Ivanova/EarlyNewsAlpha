@@ -10,10 +10,9 @@ public class User {
 	private boolean isAdmin;
 	
 	
-	
-	
-	
-	
+		public User() {
+		}
+		
 	public User(String name, String password, String email, boolean isAdmin) {
 		
 		this.name = name;
