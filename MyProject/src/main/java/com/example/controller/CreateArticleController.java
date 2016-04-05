@@ -34,7 +34,7 @@ public class CreateArticleController {
 	}
 	
 	@RequestMapping(value="/newarticle", method=RequestMethod.POST)
-	public String addNewArticle(@ModelAttribute Article newArticle) {
+	public String addNewArticle(@ModelAttribute Article newArticle, Model model) {
 	newArticle.setDateAdded(LocalDateTime.now());
 	newArticle.setDateModified(LocalDateTime.now());
 	CategoryDAO daoCat = new CategoryDAO();
@@ -42,8 +42,12 @@ public class CreateArticleController {
 	Category temporary = daoCat.getCategoryById(idCat);
 	newArticle.setCategory(temporary);
 	ArticleDAO daoArt = new ArticleDAO();
+	int articleIDfromDB =0;
+	
 	try {
-		daoArt.createArticle(newArticle);
+		articleIDfromDB = daoArt.createArticle(newArticle);
+		newArticle.setId(articleIDfromDB);
+		model.addAttribute("newArticle", newArticle);
 	} catch (InvalidDAOException e) {
 		// TUKA DA PREPRATJA KUM DRUGA STRANICA ZA FAILURE SEGA OTIVA NA upload.jsp
 		e.printStackTrace();
@@ -56,7 +60,7 @@ public class CreateArticleController {
 //	int number =0;
 //	request.getSession().setAttribute("id", number);
 //	System.out.println(newArticle);
-		return "upload";
+		return "/addVideo";
 	}
 	
 //	@RequestMapping(value="/newarticle", method=RequestMethod.PUT)

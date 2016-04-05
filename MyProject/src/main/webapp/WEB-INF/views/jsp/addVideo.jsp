@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,13 +9,15 @@
 <title>Add video</title>
 </head>
 <body>
+ <c:if test="${not empty error}">${error}</c:if>
+
 <spring:form method="post" commandName="video">
 <p>Paste you tube link in the here"</p>
-<spring:input type="text" path="name"/>
+<spring:input type='text' path='name'/>
 <br>
 <input type="submit"/>
 </spring:form>
 
-
+<a href="/show">do not add video, go to pictures upload</a>
 </body>
 </html>

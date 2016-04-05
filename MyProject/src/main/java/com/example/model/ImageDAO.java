@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class ImageDAO extends AbstractDAO {
 
-	private static final String ADD_IMAGE = "INSERT INTO earlyedition.image VALUES(?, ?, ?, ?, ?)";
+	private static final String ADD_IMAGE = "INSERT INTO earlyedition.image VALUES(null, ?, ?, ?, ?)";
 	private static final String GET_IMAGE = "SELECT * FROM earlyedition.image where id=?";
 
 	public Image getImageById(int id) {
@@ -40,16 +40,16 @@ public class ImageDAO extends AbstractDAO {
 		int id = 0;
 		try {
 			PreparedStatement prep = getCon().prepareStatement(ADD_IMAGE, PreparedStatement.RETURN_GENERATED_KEYS);
-			prep.setInt(1, image.getId());
-			prep.setString(2, image.getName());
-			prep.setTimestamp(3, stampTime);
+//			prep.setInt(1, image.getId());
+			prep.setString(1, image.getName());
+			prep.setTimestamp(2, stampTime);
 
 			if (image.isThumbnail()) {
-				prep.setInt(4, 1);
+				prep.setInt(3, 1);
 			} else {
-				prep.setInt(4, 0);
+				prep.setInt(3, 0);
 			}
-			prep.setInt(5, image.getArtId());
+			prep.setInt(4, image.getArtId());
 			prep.executeUpdate();
 			ResultSet keys = prep.getGeneratedKeys();
 			keys.next();
