@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.model.Article;
 import com.example.model.ArticleDAO;
@@ -17,7 +18,7 @@ import com.example.model.Category;
 import com.example.model.CategoryDAO;
 import com.example.model.InvalidDAOException;
 
-
+@SessionAttributes("newArticle")
 @Controller
 public class CreateArticleController {
 
@@ -25,11 +26,10 @@ public class CreateArticleController {
 	public String createArt(Model model){
 		model.addAttribute("newArticle", new Article());
 		CategoryDAO dao = new CategoryDAO();
-				ArrayList<String> temp =new ArrayList<String>();
-		ArrayList<Category> artList  = dao.getAllCategories();
+		ArrayList<Category> catList  = dao.getAllCategories();
 		//		request.getSession().setAttribute("categories", dao.getAllCategories());
 		System.out.println("transfered to CreateA");
-		model.addAttribute("catList", artList);
+		model.addAttribute("catList", catList);
 		return "CreateA";
 	}
 	

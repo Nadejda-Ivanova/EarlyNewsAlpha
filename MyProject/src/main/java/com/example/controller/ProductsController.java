@@ -23,14 +23,14 @@ public class ProductsController {
 		return "products";
 	}
 	
-	@RequestMapping(value="/products/{product_id}",method = RequestMethod.GET)
-	public String products(Model model, @PathVariable("product_id") Integer productId) {
-//		Product product = ...get product by id from somewhere 
-//		model.addAttribute("product", product);
-		System.out.println(productId);
-		
-		return "product";
-	}
+//	@RequestMapping(value="/products/{product_id}",method = RequestMethod.GET)
+//	public String products(Model model, @PathVariable("product_id") Integer productId) {
+////		Product product = ...get product by id from somewhere 
+////		model.addAttribute("product", product);
+//		System.out.println(productId);
+//		
+//		return "product";
+//	}
 	
 	@RequestMapping(value="/products",method = RequestMethod.POST)
 	public String products(@ModelAttribute Product p) {

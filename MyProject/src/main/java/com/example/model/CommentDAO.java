@@ -13,22 +13,39 @@ import com.example.model.Article;
 import com.example.model.Comment;
 
 public class CommentDAO extends AbstractDAO implements ICommentDAO {
-	private static final String GET_BAD_COMMENTS = "SELECT * FROM earlyedition.comment where bad_comment=1 order by date_added";
-	private static final String CREATE_NEW_COMMENT_SQL = "INSERT INTO users VALUES (null, ?, ?,?,?,0,0,0,?);";
-	private static final String DELETE_COMMENT_BY_ID = "DELETE * FROM comment WHERE id = ?";
+	private static final String GET_FIRST_COMMENTS = "SELECT * FROM earlyedition.comment where bad_comment=1 order by date_added limit 1";
+	private static final String CREATE_NEW_COMMENT_SQL = "INSERT INTO earlyedition.comment VALUES (null, ?, ?,?,?,0,0,0,?);";
+	private static final String DELETE_COMMENT_BY_ID = "DELETE FROM earlyedition.comment WHERE id = ?";
+	private static final String SET_OK = "update earlyedition.comment set bad_comment=0 where id=?";
 
-	public ArrayList<Comment> getAllBad() {
-		ArrayList<Comment> temp = new ArrayList<Comment>();
+	public void setCommentAsOK(int id) throws InvalidDAOException{
 		try {
-			PreparedStatement prep = getCon().prepareStatement(GET_BAD_COMMENTS);
+			PreparedStatement prep = getCon().prepareStatement(SET_OK);
+			prep.setInt(1, id);
+			prep.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new InvalidDAOException("Bad status not changed", e);
+		}
+	}
+	
+	
+	
+	
+	public Comment getFirstBad() throws InvalidDAOException {
+		
+		Comment temp = new Comment();
+		try {
+			PreparedStatement prep = getCon().prepareStatement(GET_FIRST_COMMENTS);
 			ResultSet rs = prep.executeQuery();
-			while (rs.next()) {
-				temp.add(buildCommentFromDB(rs));
+			while(rs.next()){
+			temp = buildCommentFromDB(rs);
 			}
+			
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new InvalidDAOException("No bad comments found");
 		}
 
 		return temp;
@@ -59,6 +76,17 @@ public class CommentDAO extends AbstractDAO implements ICommentDAO {
 		return currentComment;
 	}
 
+	public void deleteCommentById(int id) throws InvalidDAOException{
+		 try {
+			PreparedStatement prep = getCon().prepareStatement(DELETE_COMMENT_BY_ID);
+			prep.setInt(1, id);
+			prep.execute();
+		} catch (SQLException e) {
+				e.printStackTrace();
+				throw new InvalidDAOException("Comment not found check id", e);
+		}
+	}
+	
 	@Override
 	public int createComment(Comment comment) throws InvalidDAOException {
 		java.sql.Timestamp stampTime = Timestamp.valueOf(LocalDateTime.now());
@@ -113,5 +141,9 @@ public class CommentDAO extends AbstractDAO implements ICommentDAO {
 		}
 
 	}
-
+	public void deleteMultipleComments(ArrayList<Comment> badList) throws InvalidDAOException{
+		for(Comment comment:badList){
+			deleteComment(comment);
+		}
+	}
 }

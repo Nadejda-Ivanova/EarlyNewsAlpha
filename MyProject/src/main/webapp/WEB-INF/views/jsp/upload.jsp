@@ -44,7 +44,7 @@
 <spring:input type="file" path="files[9]"/>
 <br>
 <br>
-<spring:input type="submit" value="Upload"/>
+<spring:input type="submit" path="test" value="Upload"/>
 
 </spring:form >
 

@@ -22,7 +22,7 @@ $(document).ready(function() {
 <h1>Spring Multiple File Upload example</h1>
  <!-- OT VCHERA -->
 <form:form method="post" action="./save"
-        modelAttribute="uploadForm" enctype="multipart/form-data">
+        enctype="multipart/form-data">
  
     <p>Select files to upload. Press Add button to add more file inputs.</p>
  

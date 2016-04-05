@@ -1,6 +1,7 @@
 package com.example.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Comment {
 	private int id;
@@ -12,6 +13,8 @@ public class Comment {
 	private int likes;
 	private int dislikes;
 	private boolean isBad;
+	private String idBad;
+
 	
 		
 	public Comment() {
@@ -84,6 +87,27 @@ public class Comment {
 	public void setBad(boolean isBad) {
 		this.isBad = isBad;
 	}
+
+//	@Override
+//	public String toString() {
+//		return text;
+//	}
+
+	public String getIdBad() {
+		return idBad;
+	}
+
+	public void setIdBad(String idBad) {
+		this.idBad = idBad;
+	}
+
+
+
+
+
+	
+
+
 	
 	
 }
