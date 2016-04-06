@@ -60,7 +60,7 @@ public class CreateArticleController {
 //	int number =0;
 //	request.getSession().setAttribute("id", number);
 //	System.out.println(newArticle);
-		return "/addVideo";
+		return "redirect:/addVideo";
 	}
 	
 //	@RequestMapping(value="/newarticle", method=RequestMethod.PUT)

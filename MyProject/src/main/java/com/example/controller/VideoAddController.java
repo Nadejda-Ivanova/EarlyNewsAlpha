@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +17,7 @@ import com.example.model.ImageDAO;
 import com.example.model.InvalidDAOException;
 import com.example.model.Video;
 import com.example.model.VideoDAO;
-@SessionAttributes("newArticle")
+
 @Controller
 public class VideoAddController {
 	
@@ -30,9 +32,11 @@ public class VideoAddController {
 		model.addAttribute("video", new Video());
 		return "addVideo";
 		}
+
+	
 	
 	@RequestMapping(value="/addVideo", method=RequestMethod.POST)
-	public String addVideo(@ModelAttribute("video") Video video, @ModelAttribute("newArticle") Article myArticle) {
+	public String addVideo(@ModelAttribute("video") Video video, HttpServletRequest request) {
 		String[] temp = video.getName().split("=");
 		String videoId = temp[temp.length-1];
 		String thumbnail = THUMBNAIL_PART_ONE + videoId+THUMBNAIL_PART_TWO;
@@ -40,7 +44,8 @@ public class VideoAddController {
 		Image videoImage = new Image();
 		videoImage.setName(thumbnail);
 		videoImage.setThumbnail(true);
-		videoImage.setArtId(myArticle.getId());
+		Article currentArticle = (Article) request.getSession().getAttribute("newArticle");
+		videoImage.setArtId(currentArticle.getId());
 		ImageDAO picDAO = new ImageDAO();
 		int videoImgId =0;
 		try {

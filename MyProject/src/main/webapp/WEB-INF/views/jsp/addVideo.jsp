@@ -13,7 +13,7 @@ pageEncoding="ISO-8859-1"%>
 
 <spring:form method="post" commandName="video">
 <p>Paste you tube link in the here"</p>
-<spring:input type='text' path='name'/>
+<spring:input type="text" path="name"/>
 <br>
 <input type="submit"/>
 </spring:form>

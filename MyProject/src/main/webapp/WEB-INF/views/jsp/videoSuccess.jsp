@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<a href="./addVideo">Add another video</a>
+<br>
+<br>
+<a href="./addVideo">Add another video</a>
 </body>
 </html>
