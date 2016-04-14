@@ -5,9 +5,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
 -- Schema earlyedition
 -- -----------------------------------------------------
 
@@ -18,41 +15,98 @@ CREATE SCHEMA IF NOT EXISTS `earlyedition` DEFAULT CHARACTER SET utf8 ;
 USE `earlyedition` ;
 
 -- -----------------------------------------------------
--- Table `earlyedition`.`category`
+-- Table `earlyedition`.`categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `earlyedition`.`category` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `earlyedition`.`categories` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `desc` TEXT NULL DEFAULT NULL,
-  `top` TINYINT(1) NULL DEFAULT NULL,
-  `main` TINYINT(1) NULL DEFAULT NULL,
-  `sort_order` TINYINT(6) NULL DEFAULT NULL,
+  `desc` TEXT NULL,
+  `top` TINYINT(1) NULL,
+  `main` TINYINT(1) NULL,
+  `sort_order` TINYINT(6) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `earlyedition`.`image`
+-- Table `earlyedition`.`articles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `earlyedition`.`image` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL DEFAULT NULL,
-  `date_added` TIMESTAMP NULL DEFAULT NULL,
-  `thumbnail` TINYINT(1) NOT NULL DEFAULT '0',
-  `art_id` INT(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `earlyedition`.`articles` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NULL,
+  `text` LONGTEXT NULL,
+  `date_added` TIMESTAMP NULL,
+  `date_modified` TIMESTAMP NULL,
+  `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `art_id_idx` (`art_id` ASC),
-  CONSTRAINT `art_id`
-    FOREIGN KEY (`art_id`)
-    REFERENCES `earlyedition`.`article` (`id`)
+  INDEX `fk_article_category1_idx` (`category_id` ASC),
+  CONSTRAINT `fk_article_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `earlyedition`.`categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `earlyedition`.`comments`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `earlyedition`.`comments` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `author` VARCHAR(255) NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `date_added` TIMESTAMP NOT NULL,
+  `text` TEXT NOT NULL,
+  `likes` TINYINT(1) NULL,
+  `dislike` TINYINT(1) NULL,
+  `bad_comment` TINYINT(1) NULL,
+  `article_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  INDEX `fk_comment_article1_idx` (`article_id` ASC),
+  CONSTRAINT `fk_comment_article1`
+    FOREIGN KEY (`article_id`)
+    REFERENCES `earlyedition`.`articles` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `earlyedition`.`images`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `earlyedition`.`images` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NULL,
+  `date_added` TIMESTAMP NULL,
+  `isThumbnail` TINYINT(1) NULL,
+  `articles_id` INT NOT NULL,
+  `path` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`, `articles_id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  INDEX `fk_image_articles1_idx` (`articles_id` ASC),
+  CONSTRAINT `fk_image_articles1`
+    FOREIGN KEY (`articles_id`)
+    REFERENCES `earlyedition`.`articles` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `earlyedition`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `earlyedition`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `admin` TINYINT(1) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -61,110 +115,36 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `earlyedition`.`videos` (
   `id` SMALLINT(5) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `img_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  `date_added` TIMESTAMP NOT NULL,
+  `path` VARCHAR(255) NULL,
+  `articles_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `articles_id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `img_id_idx` (`img_id` ASC),
-  CONSTRAINT `img_id`
-    FOREIGN KEY (`img_id`)
-    REFERENCES `earlyedition`.`image` (`id`)
+  INDEX `fk_videos_articles1_idx` (`articles_id` ASC),
+  CONSTRAINT `fk_videos_articles1`
+    FOREIGN KEY (`articles_id`)
+    REFERENCES `earlyedition`.`articles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `earlyedition`.`article`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `earlyedition`.`article` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(255) NULL DEFAULT NULL,
-  `text` LONGTEXT NULL DEFAULT NULL,
-  `date_added` TIMESTAMP NULL DEFAULT NULL,
-  `date_modified` TIMESTAMP NULL DEFAULT NULL,
-  `category_id` INT(11) NOT NULL,
-  `videos_id` SMALLINT(5) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_article_category1_idx` (`category_id` ASC),
-  INDEX `fk_article_videos1_idx` (`videos_id` ASC),
-  CONSTRAINT `fk_article_category1`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `earlyedition`.`category` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_article_videos1`
-    FOREIGN KEY (`videos_id`)
-    REFERENCES `earlyedition`.`videos` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `earlyedition`.`comment`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `earlyedition`.`comment` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `aoutor` VARCHAR(255) NULL DEFAULT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `text` TEXT NOT NULL,
-  `comment_likes` TINYINT(4) NULL DEFAULT NULL,
-  `comment_dislike` TINYINT(4) NULL DEFAULT NULL,
-  `bad_comment` TINYINT(1) NULL DEFAULT NULL,
-  `article_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_comment_article1_idx` (`article_id` ASC),
-  CONSTRAINT `fk_comment_article1`
-    FOREIGN KEY (`article_id`)
-    REFERENCES `earlyedition`.`article` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `earlyedition`.`subcribe`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `earlyedition`.`subcribe` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(255) NOT NULL,
-  `category_id` INT(11) NOT NULL,
+  `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   INDEX `fk_subcribe_category_idx` (`category_id` ASC),
   CONSTRAINT `fk_subcribe_category`
     FOREIGN KEY (`category_id`)
-    REFERENCES `earlyedition`.`category` (`id`)
+    REFERENCES `earlyedition`.`categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `earlyedition`.`users`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `earlyedition`.`users` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `admin` TINYINT(1) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-ENGINE = InnoDB
-AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
